@@ -6,7 +6,8 @@ def BuildOpenSSL(ANDROID_ARCH, OPENSSL_BUILD_KEY) {
       OPENSSL_ANDROID_DEST_DIR="${AKKORD_OPENSSL_HOME}/android/''' + ANDROID_ARCH + '''/"
 
       mkdir -p ${OPENSSL_ANDROID_DEST_DIR}
-      "${OPENSSL_HOME}/Configure" ${OPENSSL_BUILLD_OPTIONS} --openssldir="${OPENSSL_HOME}" ''' + OPENSSL_BUILD_KEY + '''
+      cd ${OPENSSL_HOME}
+      ./Configure ${OPENSSL_BUILLD_OPTIONS} ''' + OPENSSL_BUILD_KEY + '''
       make clean && make
 
       cp -r "${OPENSSL_HOME}/include"      "${OPENSSL_ANDROID_DEST_DIR}"
