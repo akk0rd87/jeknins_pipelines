@@ -1,3 +1,22 @@
+def BuildOpenSSL(ANDROID_ARCH, OPENSSL_BUILD_KEY) {
+    sh '''
+      PATH="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/bin:${ANDROID_NDK_ROOT}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:${ANDROID_NDK_ROOT}/prebuilt/linux-x86_64/bin:$PATH"
+      OPENSSL_BUILLD_OPTIONS="-D__ANDROID_API__=21 -DAPP_PLATFORM=16 -DTARGET_PLATFORM=16 -DOPENSSL_NO_STDIO no-sock no-ui-console no-err no-asm no-egd no-zlib no-uplink no-camellia no-filenames no-legacy no-stdio no-tests no-engine no-threads"
+
+      OPENSSL_ANDROID_DEST_DIR="${AKKORD_OPENSSL_HOME}/android/''' + ANDROID_ARCH + '''/"
+
+      mkdir -p ${OPENSSL_ANDROID_DEST_DIR}
+      "${OPENSSL_HOME}/Configure" ${OPENSSL_BUILLD_OPTIONS} --openssldir="${OPENSSL_HOME}" ''' + OPENSSL_BUILD_KEY + '''
+      make clean && make
+
+      cp -r "${OPENSSL_HOME}/include"      "${OPENSSL_ANDROID_DEST_DIR}"
+      mv    "${OPENSSL_HOME}/libssl.a"     "${OPENSSL_ANDROID_DEST_DIR}"
+      mv    "${OPENSSL_HOME}/libcrypto.a"  "${OPENSSL_ANDROID_DEST_DIR}"
+      mv    "${OPENSSL_HOME}/libssl.so"    "${OPENSSL_ANDROID_DEST_DIR}"
+      mv    "${OPENSSL_HOME}/libcrypto.so" "${OPENSSL_ANDROID_DEST_DIR}"
+    '''
+}
+
 pipeline {
     agent any
 
@@ -24,73 +43,12 @@ pipeline {
 
         stage('Build openssl') {
             steps {
-                sh '''
-                    PATH="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/bin:${ANDROID_NDK_ROOT}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:${ANDROID_NDK_ROOT}/prebuilt/linux-x86_64/bin:$PATH"
-                    OPENSSL_BUILLD_OPTIONS="-D__ANDROID_API__=21 -DAPP_PLATFORM=16 -DTARGET_PLATFORM=16 -DOPENSSL_NO_STDIO no-sock no-ui-console no-err no-asm no-egd no-zlib no-uplink no-camellia no-filenames no-legacy no-stdio no-tests no-engine no-threads"
-
-
-                    OPENSSL_ANDROID_DEST_DIR="${AKKORD_OPENSSL_HOME}/android/x86/"
-                    OPENSSL_BUILD_KEY=android-x86
-
-                    mkdir -p ${OPENSSL_ANDROID_DEST_DIR}
-                    cd ${OPENSSL_HOME}
-                    ./Configure ${OPENSSL_BUILLD_OPTIONS} ${OPENSSL_BUILD_KEY}
-                    make clean && make
-
-                    cp -r "${OPENSSL_HOME}/include"      "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.a"     "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.a"  "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.so"    "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.so" "${OPENSSL_ANDROID_DEST_DIR}"
-
-
-
-                    OPENSSL_ANDROID_DEST_DIR="${AKKORD_OPENSSL_HOME}/android/x86_64/"
-                    OPENSSL_BUILD_KEY=android-x86_64
-
-                    mkdir -p ${OPENSSL_ANDROID_DEST_DIR}
-                    cd ${OPENSSL_HOME}
-                    ./Configure ${OPENSSL_BUILLD_OPTIONS} ${OPENSSL_BUILD_KEY}
-                    make clean && make
-
-                    cp -r "${OPENSSL_HOME}/include"      "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.a"     "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.a"  "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.so"    "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.so" "${OPENSSL_ANDROID_DEST_DIR}"
-
-
-                    OPENSSL_ANDROID_DEST_DIR="${AKKORD_OPENSSL_HOME}/android/armeabi-v7a/"
-                    OPENSSL_BUILD_KEY=android-arm
-
-                    mkdir -p ${OPENSSL_ANDROID_DEST_DIR}
-                    cd ${OPENSSL_HOME}
-                    ./Configure ${OPENSSL_BUILLD_OPTIONS} ${OPENSSL_BUILD_KEY}
-                    make clean && make
-
-                    cp -r "${OPENSSL_HOME}/include"      "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.a"     "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.a"  "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.so"    "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.so" "${OPENSSL_ANDROID_DEST_DIR}"
-
-                    OPENSSL_ANDROID_DEST_DIR="${AKKORD_OPENSSL_HOME}/android/arm64-v8a/"
-                    OPENSSL_BUILD_KEY=android-arm64
-
-                    mkdir -p ${OPENSSL_ANDROID_DEST_DIR}
-                    cd ${OPENSSL_HOME}
-                    ./Configure ${OPENSSL_BUILLD_OPTIONS} ${OPENSSL_BUILD_KEY}
-                    make clean && make
-
-                    cp -r "${OPENSSL_HOME}/include"      "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.a"     "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.a"  "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libssl.so"    "${OPENSSL_ANDROID_DEST_DIR}"
-                    mv    "${OPENSSL_HOME}/libcrypto.so" "${OPENSSL_ANDROID_DEST_DIR}"
-                '''
+                BuildOpenSSL('x86'        , 'android-x86'    )
+                BuildOpenSSL('x86_64'     , 'android-x86_64 ')
+                BuildOpenSSL('armeabi-v7a', 'android-arm'    )
+                BuildOpenSSL('arm64-v8a'  , 'android-arm64'  )
             }
         }
-
 
         stage('Checkout asio') {
             steps {
@@ -102,13 +60,14 @@ pipeline {
         stage('Checkout p2putils') {
             steps {
                 checkout scmGit(branches: [[name: '*/master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'p2putils']], userRemoteConfigs: [[credentialsId: 'p2pUtilsDeployKey', url: 'git@github.com:akk0rd87/p2putils.git']])
-                sh 'chmod +x p2putils/sharedlib/build.sh'
+                sh 'chmod +x "${WORKSPACE}/p2putils/sharedlib/build.sh"'
             }
         }
 
         stage('Build sharedwrapper') {
             steps {
-                sh 'cd p2putils/sharedlib && ./build.sh'
+                sh 'cd "${WORKSPACE}/p2putils/sharedlib" && ./build.sh'
+                sh 'cd "${WORKSPACE}"'
             }
         }
 
@@ -121,63 +80,63 @@ pipeline {
         stage('Checkout wordsapp') {
             steps {
                 checkout scmGit(branches: [[name: '*/master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'wordsapp']], userRemoteConfigs: [[credentialsId: 'WordsAppDeployKey', url: 'git@github.com:akk0rd87/wordsapp.git']])
-                sh 'chmod +x wordsapp/wordsru1/proj.android/gradlew'
-                sh 'chmod +x wordsapp/wordsru2/proj.android/gradlew'
-                sh 'chmod +x wordsapp/wordsru3_8/proj.android/gradlew'
+                sh 'chmod +x "${WORKSPACE}/wordsapp/wordsru1/proj.android/gradlew"'
+                sh 'chmod +x "${WORKSPACE}/wordsapp/wordsru2/proj.android/gradlew"'
+                sh 'chmod +x "${WORKSPACE}/wordsapp/wordsru3_8/proj.android/gradlew"'
             }
         }
 
         stage('Build wordsru1 debug') {
             steps {
-                sh 'wordsapp/wordsru1/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru1/proj.android :app:assembleDebug'
+                sh '"${WORKSPACE}/wordsapp/wordsru1/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru1/proj.android" :app:assembleDebug'
             }
         }
 
         stage('Build wordsru2 debug') {
             steps {
-                sh 'wordsapp/wordsru2/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru2/proj.android :app:assembleDebug'
+                sh '"${WORKSPACE}/wordsapp/wordsru2/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru2/proj.android" :app:assembleDebug'
             }
         }
 
-        stage('Build wordsru3_8 debug') {
+        stage('Build wordsru3 debug') {
             steps {
-                sh 'wordsapp/wordsru3_8/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru3_8/proj.android :app:assembleDebug'
+                sh '"${WORKSPACE}/wordsapp/wordsru3_8/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru3_8/proj.android" :app:assembleDebug'
             }
         }
 
         stage('Build wordsru1 release') {
             steps {
-                sh 'wordsapp/wordsru1/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru1/proj.android :app:assembleRelease'
+                sh '"${WORKSPACE}/wordsapp/wordsru1/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru1/proj.android" :app:assembleRelease'
             }
         }
 
         stage('Build wordsru2 release') {
             steps {
-                sh 'wordsapp/wordsru2/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru2/proj.android :app:assembleRelease'
+                sh '"${WORKSPACE}/wordsapp/wordsru2/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru2/proj.android" :app:assembleRelease'
             }
         }
 
-        stage('Build wordsru3_8 release') {
+        stage('Build wordsru3 release') {
             steps {
-                sh 'wordsapp/wordsru3_8/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru3_8/proj.android :app:assembleRelease'
+                sh '"${WORKSPACE}/wordsapp/wordsru3_8/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru3_8/proj.android" :app:assembleRelease'
             }
         }
 
         stage('Publish wordsru1') {
             steps {
-                sh 'wordsapp/wordsru1/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru1/proj.android _publishGooglePlayStoreBundleToAlpha'
+                sh '"${WORKSPACE}/wordsapp/wordsru1/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru1/proj.android" _publishGooglePlayStoreBundleToAlpha'
             }
         }
 
         stage('Publish wordsru2') {
             steps {
-                sh 'wordsapp/wordsru2/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru2/proj.android _publishGooglePlayStoreBundleToAlpha'
+                sh '"${WORKSPACE}/wordsapp/wordsru2/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru2/proj.android" _publishGooglePlayStoreBundleToAlpha'
             }
         }
 
-        stage('Publish wordsru3_8') {
+        stage('Publish wordsru3') {
             steps {
-                sh 'wordsapp/wordsru3_8/proj.android/gradlew -p ${WORKSPACE}/wordsapp/wordsru3_8/proj.android _publishGooglePlayStoreBundleToAlpha'
+                sh '"${WORKSPACE}/wordsapp/wordsru3_8/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru3_8/proj.android" _publishGooglePlayStoreBundleToAlpha'
             }
         }
     }
