@@ -18,6 +18,22 @@ def BuildOpenSSL(ANDROID_ARCH, OPENSSL_BUILD_KEY) {
     '''
 }
 
+def runGradleProjectCMD(PROJECT, COMMAND) {
+    sh '"${WORKSPACE}/wordsapp/' + PROJECT + '/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/' + PROJECT + '/proj.android" ' + COMMAND
+}
+
+def runBuildDebug(PROJECT) {
+    runGradleProjectCMD(PROJECT, ':app:assembleDebug')
+}
+
+def runBuildRelease(PROJECT) {
+    runGradleProjectCMD(PROJECT, ':app:assembleRelease')
+}
+
+def runPublish(PROJECT) {
+    runGradleProjectCMD(PROJECT, '_publishGooglePlayStoreBundleToAlpha')
+}
+
 pipeline {
     agent any
 
@@ -89,55 +105,55 @@ pipeline {
 
         stage('Build wordsru1 debug') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru1/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru1/proj.android" :app:assembleDebug'
+                runBuildDebug('wordsru1')
             }
         }
 
         stage('Build wordsru2 debug') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru2/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru2/proj.android" :app:assembleDebug'
+                runBuildDebug('wordsru2')
             }
         }
 
         stage('Build wordsru3 debug') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru3_8/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru3_8/proj.android" :app:assembleDebug'
+                runBuildDebug('wordsru3_8')
             }
         }
 
         stage('Build wordsru1 release') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru1/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru1/proj.android" :app:assembleRelease'
+                runBuildRelease('wordsru1')
             }
         }
 
         stage('Build wordsru2 release') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru2/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru2/proj.android" :app:assembleRelease'
+                runBuildRelease('wordsru2')
             }
         }
 
         stage('Build wordsru3 release') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru3_8/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru3_8/proj.android" :app:assembleRelease'
+                runBuildRelease('wordsru3_8')
             }
         }
 
         stage('Publish wordsru1') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru1/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru1/proj.android" _publishGooglePlayStoreBundleToAlpha'
+                runPublish('wordsru1')
             }
         }
 
         stage('Publish wordsru2') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru2/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru2/proj.android" _publishGooglePlayStoreBundleToAlpha'
+                runPublish('wordsru2')
             }
         }
 
         stage('Publish wordsru3') {
             steps {
-                sh '"${WORKSPACE}/wordsapp/wordsru3_8/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/wordsru3_8/proj.android" _publishGooglePlayStoreBundleToAlpha'
+                runPublish('wordsru3_8')
             }
         }
     }
