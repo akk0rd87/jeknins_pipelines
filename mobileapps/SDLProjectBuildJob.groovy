@@ -1,9 +1,18 @@
+def gradleCall(GRADLE_TASK) {
+    withCredentials([file(credentialsId: '${ANDROID_KEYSTOREKEY_FILE}'  , variable: 'ANDROID_KEYSTORE_KEY'),
+                     file(credentialsId: '${ANDROID_KEYSTOREPARAM_FILE}', variable: 'ANDROID_KEYSTORE_PARAMS'),
+                     file(credentialsId: 'GooglePlayApiCredentials'     , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
+        sh '${WORKSPACE}/${AKK0RD87_GITHUB_PROJECT_NAME}/proj.android/gradlew -p ${WORKSPACE}/${AKK0RD87_GITHUB_PROJECT_NAME}/proj.android ' + GRADLE_TASK
+    }
+}
+
 pipeline {
-    agent any
+    agent {
+       label "SDL"
+    }
 
     environment {
         ANDROID_SDK_ROOT='/opt/android-sdk'
-        ANDROID_KEYSTORE_HOME='/opt/android-keys/'
         AKKORD_SDK_HOME="${WORKSPACE}/akkordsdk/"
         GRADLE_CALL="${WORKSPACE}/${AKK0RD87_GITHUB_PROJECT_NAME}/proj.android/gradlew -p ${WORKSPACE}/${AKK0RD87_GITHUB_PROJECT_NAME}/proj.android"
     }
@@ -24,19 +33,19 @@ pipeline {
 
         stage('Build debug') {
             steps {
-                sh '${GRADLE_CALL} :app:assembleGooglePlayDebug'
+                gradleCall(':app:assembleGooglePlayDebug')
             }
         }
 
         stage('Build release') {
             steps {
-                sh '${GRADLE_CALL} :app:assembleGooglePlayRelease'
+                gradleCall(':app:assembleGooglePlayRelease')
             }
         }
 
         stage('Publish alpha') {
             steps {
-                sh '${GRADLE_CALL} _publishGooglePlayStoreBundleToAlpha'
+                gradleCall('_publishGooglePlayStoreBundleToAlpha')
             }
         }
     }
