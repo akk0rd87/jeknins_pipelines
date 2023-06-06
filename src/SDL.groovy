@@ -38,18 +38,21 @@ def SDLCall(String ProjectName, String DeployKey) {
             stage('Build debug') {
                 steps {
                     //gradleCall(':app:assembleGooglePlayDebug')
+                    sh ':app:assembleGooglePlayDebug'
                 }
             }
 
             stage('Build release') {
                 steps {
                     //gradleCall(':app:assembleGooglePlayRelease')
+                    sh ':app:assembleGooglePlayRelease'
                 }
             }
 
             stage('Publish alpha') {
                 steps {
                     //gradleCall('_publishGooglePlayStoreBundleToAlpha')
+                    sh ':app:_publishGooglePlayStoreBundleToAlpha'
                 }
             }
         }
