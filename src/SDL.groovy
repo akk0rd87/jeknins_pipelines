@@ -1,12 +1,12 @@
 def SDLCall(String ProjectName, String DeployKey) {
 
-    def gradleCall(GRADLE_TASK) {
-        withCredentials([file(credentialsId: '${ANDROID_KEYSTOREKEY_FILE}'  , variable: 'ANDROID_KEYSTORE_KEY'),
-                        file(credentialsId: '${ANDROID_KEYSTOREPARAM_FILE}', variable: 'ANDROID_KEYSTORE_PARAMS'),
-                        file(credentialsId: 'GooglePlayApiCredentials'     , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
-            sh '${WORKSPACE}/${ProjectName}/proj.android/gradlew -p ${WORKSPACE}/${ProjectName}/proj.android ' + GRADLE_TASK
-        }
-    }
+    ///def gradleCall(GRADLE_TASK) {
+    ///    withCredentials([file(credentialsId: '${ANDROID_KEYSTOREKEY_FILE}'  , variable: 'ANDROID_KEYSTORE_KEY'),
+    ///                    file(credentialsId: '${ANDROID_KEYSTOREPARAM_FILE}', variable: 'ANDROID_KEYSTORE_PARAMS'),
+    ///                    file(credentialsId: 'GooglePlayApiCredentials'     , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
+    ///        sh '${WORKSPACE}/${ProjectName}/proj.android/gradlew -p ${WORKSPACE}/${ProjectName}/proj.android ' + GRADLE_TASK
+    ///    }
+    ///}
 
     pipeline {
         agent any
@@ -37,19 +37,19 @@ def SDLCall(String ProjectName, String DeployKey) {
 
             stage('Build debug') {
                 steps {
-                    gradleCall(':app:assembleGooglePlayDebug')
+                    //gradleCall(':app:assembleGooglePlayDebug')
                 }
             }
 
             stage('Build release') {
                 steps {
-                    gradleCall(':app:assembleGooglePlayRelease')
+                    //gradleCall(':app:assembleGooglePlayRelease')
                 }
             }
 
             stage('Publish alpha') {
                 steps {
-                    gradleCall('_publishGooglePlayStoreBundleToAlpha')
+                    //gradleCall('_publishGooglePlayStoreBundleToAlpha')
                 }
             }
         }
