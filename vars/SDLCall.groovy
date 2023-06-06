@@ -1,6 +1,6 @@
 def gradleCall(String key, String params, String  GRADLE_TASK) {
-    withCredentials([file(credentialsId: 'AndroidKeyStoreKey2015'  , variable: 'ANDROID_KEYSTORE_KEY'),
-                     file(credentialsId: 'AndroidKeyStoreParams2015', variable: 'ANDROID_KEYSTORE_PARAMS'),
+    withCredentials([file(credentialsId: "${key}"   , variable: 'ANDROID_KEYSTORE_KEY'),
+                     file(credentialsId: "${params}", variable: 'ANDROID_KEYSTORE_PARAMS'),
                      file(credentialsId: 'GooglePlayApiCredentials' , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
         sh '${PROJECT_DIR}/gradlew -p ${PROJECT_DIR} ' + GRADLE_TASK
     }
@@ -32,7 +32,7 @@ def call(String ProjectName,  String DeployKey,  String KeyStoreKeyFile,  String
 
             stage('Build debug') {
                 steps {
-                    gradleCall("FcrossGithubDeployKey", "AndroidKeyStoreKey2015", ':app:assembleGooglePlayDebug')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", ':app:assembleGooglePlayDebug')
                 }
             }
         }
