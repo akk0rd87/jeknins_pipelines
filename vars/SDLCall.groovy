@@ -1,19 +1,12 @@
-def gradleCall(GRADLE_TASK) {
-    withCredentials([file(credentialsId: "${KeyStoreKeyFile}"       , variable: 'ANDROID_KEYSTORE_KEY'),
-                     file(credentialsId: "${KeyStoreKeyParams}"     , variable: 'ANDROID_KEYSTORE_PARAMS'),
+def gradleCall(String key, String params, String  GRADLE_TASK) {
+    withCredentials([file(credentialsId: 'FcrossGithubDeployKey'  , variable: 'ANDROID_KEYSTORE_KEY'),
+                     file(credentialsId: 'AndroidKeyStoreKey2015', variable: 'ANDROID_KEYSTORE_PARAMS'),
                      file(credentialsId: 'GooglePlayApiCredentials' , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
         sh '${PROJECT_DIR}/gradlew -p ${PROJECT_DIR} ' + GRADLE_TASK
     }
 }
 
-def call(
-  String ProjectName,
-  String DeployKey,
-  String KeyStoreKeyFile,
-  String KeyStoreKeyParams,
-  String SDKBranch,
-  String ProjectBranch
-) {
+def call(String ProjectName,  String DeployKey,  String KeyStoreKeyFile,  String KeyStoreKeyParams,  String SDKBranch,  String ProjectBranch) {
     pipeline {
         agent any
 
@@ -39,21 +32,11 @@ def call(
 
             stage('Build debug') {
                 steps {
-                    gradleCall(':app:assembleGooglePlayDebug')
-                }
-            }
-
-            stage('Build release') {
-                steps {
-                    gradleCall(':app:assembleGooglePlayRelease')
-                }
-            }
-
-            stage('Publish alpha') {
-                steps {
-                    gradleCall('_publishGooglePlayStoreBundleToAlpha')
+                    gradleCall("FcrossGithubDeployKey", "AndroidKeyStoreKey2015", ':app:assembleGooglePlayDebug')
                 }
             }
         }
     }
 }
+
+SDLCall('fcross', 'FcrossGithubDeployKey', 'AndroidKeyStoreKey2015', 'AndroidKeyStoreParams2015', 'master', 'master')
