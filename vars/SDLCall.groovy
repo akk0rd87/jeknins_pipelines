@@ -12,14 +12,15 @@ def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String Ke
 
         environment {
             ANDROID_SDK_ROOT='/opt/android-sdk'
-            AKKORD_SDK_HOME="${WORKSPACE}/akkordsdk/"
+            AKKORD_SDK_DIR="akkordsdk"
+            AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
             PROJECT_DIR="${WORKSPACE}/${ProjectName}/proj.android/"
         }
 
         stages {
             stage('Checkout akkordsdk') {
                 steps {
-                    checkout scmGit(branches: [[name: "${SDKBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'akkordsdk']], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
+                    checkout scmGit(branches: [[name: "${SDKBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
                 }
             }
 
