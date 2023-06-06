@@ -1,6 +1,6 @@
 def gradleCall(String key, String params, String  GRADLE_TASK) {
-    withCredentials([file(credentialsId: 'FcrossGithubDeployKey'  , variable: 'ANDROID_KEYSTORE_KEY'),
-                     file(credentialsId: 'AndroidKeyStoreKey2015', variable: 'ANDROID_KEYSTORE_PARAMS'),
+    withCredentials([file(credentialsId: 'AndroidKeyStoreKey2015'  , variable: 'ANDROID_KEYSTORE_KEY'),
+                     file(credentialsId: 'AndroidKeyStoreParams2015', variable: 'ANDROID_KEYSTORE_PARAMS'),
                      file(credentialsId: 'GooglePlayApiCredentials' , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
         sh '${PROJECT_DIR}/gradlew -p ${PROJECT_DIR} ' + GRADLE_TASK
     }
