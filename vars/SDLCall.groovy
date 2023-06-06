@@ -1,4 +1,4 @@
-def SDLCall(String ProjectName, String DeployKey) {
+def call(String ProjectName, String DeployKey) {
 
     def gradleCall(GRADLE_TASK) {
         withCredentials([file(credentialsId: '${ANDROID_KEYSTOREKEY_FILE}'  , variable: 'ANDROID_KEYSTORE_KEY'),
