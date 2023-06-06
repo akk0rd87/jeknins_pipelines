@@ -1,12 +1,12 @@
-def call(String ProjectName, String DeployKey) {
-
-    def gradleCall(GRADLE_TASK) {
-        withCredentials([file(credentialsId: '${ANDROID_KEYSTOREKEY_FILE}'  , variable: 'ANDROID_KEYSTORE_KEY'),
-                        file(credentialsId: '${ANDROID_KEYSTOREPARAM_FILE}', variable: 'ANDROID_KEYSTORE_PARAMS'),
-                        file(credentialsId: 'GooglePlayApiCredentials'     , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
-            sh '${WORKSPACE}/${ProjectName}/proj.android/gradlew -p ${WORKSPACE}/${ProjectName}/proj.android ' + GRADLE_TASK
-        }
+def gradleCall(GRADLE_TASK) {
+    withCredentials([file(credentialsId: '${ANDROID_KEYSTOREKEY_FILE}'  , variable: 'ANDROID_KEYSTORE_KEY'),
+                    file(credentialsId: '${ANDROID_KEYSTOREPARAM_FILE}', variable: 'ANDROID_KEYSTORE_PARAMS'),
+                    file(credentialsId: 'GooglePlayApiCredentials'     , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
+        sh '${WORKSPACE}/${ProjectName}/proj.android/gradlew -p ${WORKSPACE}/${ProjectName}/proj.android ' + GRADLE_TASK
     }
+}
+
+def call(String ProjectName, String DeployKey) {
 
     pipeline {
         agent any
