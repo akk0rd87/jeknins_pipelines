@@ -50,5 +50,3 @@ def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String Ke
         }
     }
 }
-
-SDLCall('fcross', 'FcrossGithubDeployKey', 'AndroidKeyStoreKey2015', 'AndroidKeyStoreParams2015', 'master', 'master')
