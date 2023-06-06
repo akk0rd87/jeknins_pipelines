@@ -36,13 +36,13 @@ def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String Ke
                 }
             }
 
-            stage('Build debug') {
+            stage('Build release') {
                 steps {
                     gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", ':app:assembleGooglePlayRelease')
                 }
             }
 
-            stage('Build debug') {
+            stage('Publish') {
                 steps {
                     gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_publishGooglePlayStoreBundleToAlpha')
                 }
