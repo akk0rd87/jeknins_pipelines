@@ -14,8 +14,8 @@ def call(String ProjectName, String DeployKey) {
         environment {
             ANDROID_SDK_ROOT='/opt/android-sdk'
             AKKORD_SDK_HOME="${WORKSPACE}/akkordsdk/"
-            AKK0RD87_GITHUB_PROJECT_NAME=ProjectName
-            AKK0RD87_DEPLOY_KEY=DeployKey
+            AKK0RD87_GITHUB_PROJECT_NAME="${ProjectName}"
+            AKK0RD87_DEPLOY_KEY="${DeployKey}"
             GRADLE_CALL="${WORKSPACE}/${AKK0RD87_GITHUB_PROJECT_NAME}/proj.android/gradlew -p ${WORKSPACE}/${AKK0RD87_GITHUB_PROJECT_NAME}/proj.android"
             AKK0RD_SDK_BRANCH='master'
             PROJECT_BRANCH='master'
