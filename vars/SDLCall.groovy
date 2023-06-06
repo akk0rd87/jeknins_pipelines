@@ -6,7 +6,7 @@ def gradleCall(String key, String params, String  GRADLE_TASK) {
     }
 }
 
-def call(String ProjectName,  String DeployKey,  String KeyStoreKeyFile,  String KeyStoreKeyParams,  String SDKBranch,  String ProjectBranch) {
+def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String KeyStoreKeyParams, String SDKBranch, String ProjectBranch) {
     pipeline {
         agent any
 
@@ -33,6 +33,18 @@ def call(String ProjectName,  String DeployKey,  String KeyStoreKeyFile,  String
             stage('Build debug') {
                 steps {
                     gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", ':app:assembleGooglePlayDebug')
+                }
+            }
+
+            stage('Build debug') {
+                steps {
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", ':app:assembleGooglePlayRelease')
+                }
+            }
+
+            stage('Build debug') {
+                steps {
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_publishGooglePlayStoreBundleToAlpha')
                 }
             }
         }
