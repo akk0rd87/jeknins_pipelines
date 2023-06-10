@@ -6,7 +6,15 @@ def gradleCall(String key, String params, String  GRADLE_TASK) {
     }
 }
 
-def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String KeyStoreKeyParams, String SDKBranch, String ProjectBranch) {
+def call(
+    String ProjectDir,
+    String ProjectURL,
+    String DeployKey,
+    String KeyStoreKeyFile,
+    String KeyStoreKeyParams,
+    String SDKBranch,
+    String ProjectBranch
+) {
     pipeline {
         agent any
 
@@ -14,7 +22,7 @@ def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String Ke
             ANDROID_SDK_ROOT='/opt/android-sdk'
             AKKORD_SDK_DIR="akkordsdk"
             AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
-            PROJECT_DIR="${WORKSPACE}/${ProjectName}/proj.android/"
+            PROJECT_DIR="${WORKSPACE}/${ProjectDir}/proj.android/"
         }
 
         stages {
@@ -26,7 +34,7 @@ def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String Ke
 
             stage("Checkout project") {
                 steps {
-                    checkout scmGit(branches: [[name: "${ProjectBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${ProjectName}"]], userRemoteConfigs: [[credentialsId: "${DeployKey}", url: "git@github.com:akk0rd87/${ProjectName}.git"]])
+                    checkout scmGit(branches: [[name: "${ProjectBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${ProjectDir}"]], userRemoteConfigs: [[credentialsId: "${DeployKey}", url: "${ProjectURL}"]])
                     sh 'chmod +x ${PROJECT_DIR}/gradlew'
                 }
             }
