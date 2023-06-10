@@ -33,19 +33,25 @@ def call(String ProjectName, String DeployKey, String KeyStoreKeyFile, String Ke
 
             stage('Build debug') {
                 steps {
-                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", ':app:assembleGooglePlayDebug')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildDebug')
                 }
             }
 
             stage('Build release') {
                 steps {
-                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", ':app:assembleGooglePlayRelease')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildRelease')
+                }
+            }
+
+            stage('Test') {
+                steps {
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsTest')
                 }
             }
 
             stage('Publish') {
                 steps {
-                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_publishGooglePlayStoreBundleToAlpha')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsPublish')
                 }
             }
         }
