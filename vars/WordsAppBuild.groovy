@@ -42,7 +42,7 @@ def runPublish(KeyStoreKeyFile, KeyStoreKeyParams, PROJECT) {
     runGradleProjectCMD("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", PROJECT, '_jenkinsPublish')
 }
 
-def wordsAppCall(
+def call(
     String ProjectDir,
     String ProjectURL,
     String DeployKey,
