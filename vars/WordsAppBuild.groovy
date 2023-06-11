@@ -60,7 +60,6 @@ def call(
             ANDROID_SDK_ROOT='/opt/android-sdk'
             ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk/21.4.7075529"
             ANDROID_NDK_ROOT="${ANDROID_NDK_HOME}"
-            ANDROID_KEYSTORE_HOME='/opt/android-keys/'
             ASIO_HOME="${WORKSPACE}/asio/"
             P2PCLIENT_HOME="${WORKSPACE}/p2putils/p2pclient/include"
             OPENSSL_HOME="${WORKSPACE}/openssl/"
@@ -154,6 +153,24 @@ def call(
             stage('Build wordsru3 release') {
                 steps {
                     runBuildRelease("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", 'wordsru3_8')
+                }
+            }
+
+            stage('Test wordsru1') {
+                steps {
+                    runTest("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", 'wordsru1')
+                }
+            }
+
+            stage('Test wordsru2') {
+                steps {
+                    runTest("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", 'wordsru2')
+                }
+            }
+
+            stage('Test wordsru3') {
+                steps {
+                    runTest("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", 'wordsru3_8')
                 }
             }
 
