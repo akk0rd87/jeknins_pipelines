@@ -1,0 +1,21 @@
+https://www.baeldung.com/ops/jenkins-enable-https
+1) надо возможно сконвертить его в новый формат
+2) Положить в папку jenkins, как показано в таске
+3) Дать права на файл jenkins-у
+https://www.youtube.com/watch?v=2uYL4az1BVU
+https://gist.github.com/darinpope/8eac0c4c811157b2e2e3646893289812
+4) port forwarding https://www.baeldung.com/linux/ufw-port-forward
+
+
+
+https://devopscube.com/configure-ssl-jenkins/
+
+openssl pkcs12 -export -out jenkins.p12 \
+-passout 'pass:******' -inkey jenkins.key \
+-in certificate.crt -certfile ca_bundle.crt -name jenkins.popapp.org
+
+keytool -importkeystore -srckeystore jenkins.p12 \
+-srcstorepass ':******'' -srcstoretype PKCS12 \
+-srcalias jenkins.popapp.org -deststoretype JKS \
+-destkeystore jenkins.jks -deststorepass ':******'' \
+-destalias jenkins.popapp.org
