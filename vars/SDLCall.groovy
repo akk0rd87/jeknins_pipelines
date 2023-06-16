@@ -19,7 +19,6 @@ def call(
         agent any
 
         environment {
-            ANDROID_SDK_ROOT='/opt/android-sdk'
             AKKORD_SDK_DIR="akkordsdk"
             AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
             PROJECT_DIR="${WORKSPACE}/${ProjectDir}/proj.android/"
