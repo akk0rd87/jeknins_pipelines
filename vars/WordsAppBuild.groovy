@@ -8,7 +8,8 @@ def BuildOpenSSL(ANDROID_ARCH, OPENSSL_BUILD_KEY) {
       mkdir -p ${OPENSSL_ANDROID_DEST_DIR}
       cd ${OPENSSL_HOME}
       ./Configure ${OPENSSL_BUILLD_OPTIONS} ''' + OPENSSL_BUILD_KEY + '''
-      make clean && make
+      make clean
+      make
 
       cp -r "${OPENSSL_HOME}/include"      "${OPENSSL_ANDROID_DEST_DIR}"
       mv    "${OPENSSL_HOME}/libssl.a"     "${OPENSSL_ANDROID_DEST_DIR}"
