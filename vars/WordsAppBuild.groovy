@@ -57,7 +57,7 @@ def call(
         environment {
             AKKORD_SDK_DIR="akkordsdk"
             AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
-            ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk/24.0.8215888"
+            ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk/21.4.7075529"
             ANDROID_NDK_ROOT="${ANDROID_NDK_HOME}"
             ASIO_HOME="${WORKSPACE}/asio/"
             P2PCLIENT_HOME="${WORKSPACE}/p2putils/p2pclient/include"
