@@ -1,0 +1,1 @@
+docker run -it --rm --platform linux/amd64              -v /opt/android-sdk/:/opt/android-sdk/ -p 8022:22 localsshserver
