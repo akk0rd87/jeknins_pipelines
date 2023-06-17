@@ -3,7 +3,7 @@ USER root
 
 ENV ANDROID_SDK_ROOT='/opt/android-sdk'
 
-RUN apt update && apt install -y openssh-server git file openjdk-19-jre-headless && \
+RUN apt update && apt install -y openssh-server git file openjdk-17-jre-headless && \
 rm -rf /var/lib/apt/lists/* && \
 useradd -ms /bin/bash jenkins --password jenkins && \
 RUN grep -q '^#*PasswordAuthentication' /etc/ssh/sshd_config && sed -i '/^#*PasswordAuthentication[[:space:]]yes/c\PasswordAuthentication no' /etc/ssh/sshd_config || echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config && \
