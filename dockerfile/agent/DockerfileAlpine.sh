@@ -3,12 +3,16 @@ USER root
 
 ENV ANDROID_SDK_ROOT='/opt/android-sdk'
 
-RUN apk update && apk add --no-cache bash openssh sed grep git file  && \
+RUN apk update && apk add --no-cache bash openssh sed grep git file openjdk17-jre-headless  && \
 rm -rf /var/cache/apk/* && \
 ssh-keygen -A && \
 adduser -s /bin/bash jenkins -D && \
 echo "jenkins:Strongpa55word" | chpasswd && \
-chown -R jenkins:jenkins /home/jenkins
+chown -R jenkins:jenkins /home/jenkins && \
+grep -q '^#*PasswordAuthentication' /etc/ssh/sshd_config && sed -i '/^#*PasswordAuthentication[[:space:]]yes/c\PasswordAuthentication no' /etc/ssh/sshd_config || echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config && \
+grep -q '^#*PermitRootLogin' /etc/ssh/sshd_config && sed -i '/^#*PermitRootLogin[[:space:]]/c\PermitRootLogin no #' /etc/ssh/sshd_config || echo 'PermitRootLogin no' >> /etc/ssh/sshd_config
+#grep -q '^#*UsePAM' /etc/ssh/sshd_config && sed -i '/^#*UsePAM[[:space:]]yes.*/c\UsePAM no' /etc/ssh/sshd_config || echo 'UsePAM no' >> /etc/ssh/sshd_config && \
+#grep -q '^#*KbdInteractiveAuthentication' /etc/ssh/sshd_config && sed -i '/^#*KbdInteractiveAuthentication[[:space:]]yes/c\KbdInteractiveAuthentication no' /etc/ssh/sshd_config || echo 'KbdInteractiveAuthentication no' >> /etc/ssh/sshd_config
 
 USER jenkins
 WORKDIR /home/jenkins
