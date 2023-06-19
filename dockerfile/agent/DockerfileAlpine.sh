@@ -3,7 +3,7 @@ USER root
 
 ENV ANDROID_SDK_ROOT='/opt/android-sdk'
 
-RUN apk update && apk add --no-cache bash openssh sed grep git file openjdk17-jre-headless  && \
+RUN apk update && apk add --no-cache bash openssh sed grep git file perl openjdk17-jre-headless  && \
 rm -rf /var/cache/apk/* && \
 ssh-keygen -A && \
 adduser -s /bin/bash jenkins -D && \
