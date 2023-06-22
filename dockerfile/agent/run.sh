@@ -8,3 +8,10 @@ docker build . -t alpineagent
 docker build --platform linux/amd64 -t alpineagent --no-cache .
 docker build --platform linux/amd64 -t jenkinsagent --no-cache .
 docker run -it --rm --platform linux/amd64 -p 8022:22  amd64/alpine:latest
+
+## host
+docker build -t alpinehost --no-cache .
+docker run -d --restart=on-failure -p 8822:22 alpinehost
+
+
+docker exec -it --user root fervent_mclean bash
