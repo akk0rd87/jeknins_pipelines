@@ -5,7 +5,7 @@ ARG ANDROID_SDK_VERSION=8092744
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_SDK_ROOT}/emulator
 
-RUN apt update && apt install -y unzip wget openssh-server git file openjdk-17-jre-headless && \
+RUN apt update && apt install -y unzip wget openssh-server git file openjdk-19-jre-headless && \
 rm -rf /var/lib/apt/lists/* && \
 wget https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip && \
 mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
