@@ -18,6 +18,7 @@ grep -q '^#*PasswordAuthentication' /etc/ssh/sshd_config && sed -i '/^#*Password
 grep -q '^#*UsePAM' /etc/ssh/sshd_config && sed -i '/^#*UsePAM[[:space:]]yes.*/c\UsePAM no' /etc/ssh/sshd_config || echo 'UsePAM no' >> /etc/ssh/sshd_config && \
 grep -q '^#*PermitRootLogin' /etc/ssh/sshd_config && sed -i '/^#*PermitRootLogin[[:space:]]/c\PermitRootLogin no #' /etc/ssh/sshd_config || echo 'PermitRootLogin no' >> /etc/ssh/sshd_config && \
 grep -q '^#*KbdInteractiveAuthentication' /etc/ssh/sshd_config && sed -i '/^#*KbdInteractiveAuthentication[[:space:]]yes/c\KbdInteractiveAuthentication no' /etc/ssh/sshd_config || echo 'KbdInteractiveAuthentication no' >> /etc/ssh/sshd_config && \
+apt remove -y wget unzip && \
 service ssh start
 
 USER jenkins
