@@ -15,3 +15,11 @@ docker run -d --restart=on-failure -p 8822:22 alpinehost
 
 
 docker exec -it --user root fervent_mclean bash
+
+
+
+docker build -t jenkinsagent --no-cache .
+
+
+
+docker run -it --rm qemu/x86-64:ovmf
