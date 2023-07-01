@@ -13,8 +13,10 @@ def call(
     String KeyStoreKeyFile,
     String KeyStoreKeyParams,
     String SDKBranch,
-    String ProjectBranch
+    String ProjectBranch,
+    String AgentLabel
 ) {
+    def AGENT_LABEL="${AgentLabel}"
     pipeline {
         agent {
             label "${AGENT_LABEL}"
