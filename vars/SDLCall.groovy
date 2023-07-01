@@ -16,10 +16,9 @@ def call(
     String ProjectBranch,
     String AgentLabel
 ) {
-    def AGENT_LABEL="${AgentLabel}"
     pipeline {
         agent {
-            label "${AGENT_LABEL}"
+            label "${AgentLabel}"
         }
 
         environment {
