@@ -1,7 +1,10 @@
 docker run -d --platform linux/amd64 --restart=on-failure -v /opt/android-sdk/:/opt/android-sdk/ -p 8022:22 jenkinsagent
 docker run -d --platform linux/amd64 --restart=on-failure -v /opt/android-sdk/:/opt/android-sdk/ -p 8022:22 alpineagent
 
+docker build -t jenkinsagent --no-cache .
+docker run -d --restart=on-failure -p 8022:22 jenkinsagent
 
+## arm64
 docker run -d --platform linux/amd64 --restart=on-failure -p 8022:22 jenkinsagent
 
 docker build . -t alpineagent
