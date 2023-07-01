@@ -53,7 +53,9 @@ def call(
     String ProjectBranch
 ) {
     pipeline {
-        agent any
+        agent {
+            label "${AGENT_LABEL}"
+        }
 
         environment {
             AKKORD_SDK_DIR="akkordsdk"
