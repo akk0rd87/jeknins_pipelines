@@ -50,11 +50,12 @@ def call(
     String KeyStoreKeyFile,
     String KeyStoreKeyParams,
     String SDKBranch,
-    String ProjectBranch
+    String ProjectBranch,
+    String AgentLabel
 ) {
     pipeline {
         agent {
-            label "${AGENT_LABEL}"
+            label "${AgentLabel}"
         }
 
         environment {
