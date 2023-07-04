@@ -12,11 +12,14 @@ def call(
     String DeployKey,
     String KeyStoreKeyFile,
     String KeyStoreKeyParams,
-    String SDKBranch,
     String ProjectBranch,
     String AgentLabel
 ) {
     pipeline {
+        parameters {
+          string(name: 'AKK0RD_SDK_BRANCH', defaultValue: 'master', description: 'AKK0RD_SDK_BRANCH')
+        }
+
         agent {
             label "${AgentLabel}"
         }
@@ -34,7 +37,7 @@ def call(
         stages {
             stage('Checkout akkordsdk') {
                 steps {
-                    checkout scmGit(branches: [[name: "${SDKBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
+                    checkout scmGit(branches: [[name: "${AKK0RD_SDK_BRANCH}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
                 }
             }
 
