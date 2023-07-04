@@ -13,43 +13,60 @@ def call(
     String KeyStoreKeyFile,
     String KeyStoreKeyParams,
     String SDKBranch,
-    String ProjectBranch
+    String ProjectBranch,
+    String AgentLabel
 ) {
-    stages {
-        stage('Checkout akkordsdk') {
-            steps {
-                checkout scmGit(branches: [[name: "${SDKBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
-            }
+    pipeline {
+        agent {
+            label "${AgentLabel}"
         }
 
-        stage("Checkout project") {
-            steps {
-                checkout scmGit(branches: [[name: "${ProjectBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${ProjectDir}"]], userRemoteConfigs: [[credentialsId: "${DeployKey}", url: "${ProjectURL}"]])
-                sh 'chmod +x ${PROJECT_DIR}/gradlew'
-            }
+        options {
+            skipDefaultCheckout()
         }
 
-        stage('Build debug') {
-            steps {
-                gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildDebug')
-            }
+        environment {
+            AKKORD_SDK_DIR="akkordsdk"
+            AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
+            PROJECT_DIR="${WORKSPACE}/${ProjectDir}/proj.android/"
         }
 
-        stage('Build release') {
-            steps {
-                gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildRelease')
+        stages {
+            stage('Checkout akkordsdk') {
+                steps {
+                    checkout scmGit(branches: [[name: "${SDKBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
+                }
             }
-        }
 
-        stage('Test') {
-            steps {
-                gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsTest')
+            stage("Checkout project") {
+                steps {
+                    checkout scmGit(branches: [[name: "${ProjectBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${ProjectDir}"]], userRemoteConfigs: [[credentialsId: "${DeployKey}", url: "${ProjectURL}"]])
+                    sh 'chmod +x ${PROJECT_DIR}/gradlew'
+                }
             }
-        }
 
-        stage('Publish') {
-            steps {
-                gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsPublish')
+            stage('Build debug') {
+                steps {
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildDebug')
+                }
+            }
+
+            stage('Build release') {
+                steps {
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildRelease')
+                }
+            }
+
+            stage('Test') {
+                steps {
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsTest')
+                }
+            }
+
+            stage('Publish') {
+                steps {
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsPublish')
+                }
             }
         }
     }
