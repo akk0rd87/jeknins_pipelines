@@ -17,7 +17,7 @@ def call(
 ) {
     pipeline {
         parameters {
-          string(name: 'AKK0RD_SDK_BRANCH', defaultValue: 'master', description: 'AKK0RD_SDK_BRANCH')
+          string(name: 'AKK0RD_SDK_BRANCH', defaultValue: 'master')
         }
 
         agent {
