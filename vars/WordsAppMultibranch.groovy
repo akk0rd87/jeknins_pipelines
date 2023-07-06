@@ -1,7 +1,7 @@
 def BuildOpenSSL(ANDROID_ARCH, OPENSSL_BUILD_KEY) {
     sh '''
       PATH="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/bin:${ANDROID_NDK_ROOT}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:${ANDROID_NDK_ROOT}/prebuilt/linux-x86_64/bin:$PATH"
-      OPENSSL_BUILLD_OPTIONS="-D__ANDROID_API__=21 -DAPP_PLATFORM=16 -DTARGET_PLATFORM=16 -DOPENSSL_NO_STDIO no-sock no-ui-console no-err no-asm no-egd no-zlib no-uplink no-camellia no-filenames no-legacy no-stdio no-tests no-engine no-threads"
+      OPENSSL_BUILLD_OPTIONS="-D__ANDROID_API__=21 -DAPP_PLATFORM=19 -DTARGET_PLATFORM=19 -DOPENSSL_NO_STDIO no-sock no-ui-console no-err no-asm no-egd no-zlib no-uplink no-camellia no-filenames no-legacy no-stdio no-tests no-engine no-threads"
 
       OPENSSL_ANDROID_DEST_DIR="${AKKORD_OPENSSL_HOME}/android/''' + ANDROID_ARCH + '''/"
 
