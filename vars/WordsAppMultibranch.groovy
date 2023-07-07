@@ -203,5 +203,12 @@ def call(
                 }
             }
         }
+
+        post {
+            always {
+                sh 'cd ${WORKSPACE}'
+                deleteDir()
+            }
+        }
     }
 }
