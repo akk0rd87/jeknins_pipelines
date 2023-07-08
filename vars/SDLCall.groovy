@@ -65,5 +65,13 @@ def call(
                 }
             }
         }
+
+        post {
+            always {
+                dir("${WORKSPACE}") {
+                    deleteDir()
+                }
+            }
+        }
     }
 }
