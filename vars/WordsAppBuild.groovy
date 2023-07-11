@@ -23,7 +23,7 @@ def runGradleProjectCMD(String key, String params, String PROJECT, String COMMAN
     withCredentials([file(credentialsId: "${key}"   , variable: 'ANDROID_KEYSTORE_KEY'),
                      file(credentialsId: "${params}", variable: 'ANDROID_KEYSTORE_PARAMS'),
                      file(credentialsId: 'GooglePlayApiCredentials' , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
-        sh '"${WORKSPACE}/wordsapp/' + PROJECT + '/proj.android/gradlew" -p "${WORKSPACE}/wordsapp/' + PROJECT + '/proj.android" ' + COMMAND + ' --no-daemon'
+        sh 'pwd'
     }
 }
 
