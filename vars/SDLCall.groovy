@@ -2,7 +2,7 @@ def gradleCall(String key, String params, String GRADLE_TASK) {
     withCredentials([file(credentialsId: "${key}"   , variable: 'ANDROID_KEYSTORE_KEY'),
                      file(credentialsId: "${params}", variable: 'ANDROID_KEYSTORE_PARAMS'),
                      file(credentialsId: 'GooglePlayApiCredentials' , variable: 'ANDROID_GOOGLEPLAY_CREDS')]) {
-        sh '${PROJECT_DIR}/gradlew -p ${PROJECT_DIR} ' + GRADLE_TASK + ' --no-daemon'
+        sh 'pwd'
     }
 }
 
@@ -43,25 +43,25 @@ def call(
 
             stage('Build debug') {
                 steps {
-                    //gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildDebug')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildDebug')
                 }
             }
 
             stage('Build release') {
                 steps {
-                    //gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildRelease')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsBuildRelease')
                 }
             }
 
             stage('Test') {
                 steps {
-                    //gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsTest')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsTest')
                 }
             }
 
             stage('Publish') {
                 steps {
-                    //gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsPublish')
+                    gradleCall("${KeyStoreKeyFile}", "${KeyStoreKeyParams}", '_jenkinsPublish')
                 }
             }
         }
