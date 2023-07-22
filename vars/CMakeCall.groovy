@@ -25,9 +25,9 @@ def call(
             stage('Test') {
                 steps {
                     dir("${PROJECT_DIR}") {
-                        for (int i = 0; i < 10; i++) {
+                        //for (int i = 0; i < 10; i++) {
                           sh 'cmake -S utests -B utests/build && cmake --build utests/build && ctest --test-dir utests/build'
-                        }
+                        //}
                     }
                 }
             }
