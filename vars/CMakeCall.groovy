@@ -18,7 +18,6 @@ def call(
             stage("Checkout project") {
                 steps {
                     checkout scmGit(branches: [[name: "${ProjectBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${ProjectDir}"]], userRemoteConfigs: [[credentialsId: "${DeployKey}", url: "${ProjectURL}"]])
-                    sh 'chmod +x ${PROJECT_DIR}/gradlew'
                 }
             }
 
