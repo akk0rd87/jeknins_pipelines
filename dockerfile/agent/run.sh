@@ -12,3 +12,6 @@ docker run -d --restart=on-failure -p 8822:22 alpinehost
 docker exec -it --user root fervent_mclean bash
 
 docker run --privileged --rm tonistiigi/binfmt:master --install amd64
+
+#
+docker build -t jenkinsagent --no-cache . && docker run -d --restart=always -p 8022:22 jenkinsagent
