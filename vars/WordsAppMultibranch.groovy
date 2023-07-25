@@ -122,6 +122,14 @@ def call(
                 }
             }
 
+            stage('Test akkordsdk') {
+                steps {
+                    dir("${AKKORD_SDK_HOME}") {
+                        sh 'cmake -S utests -B utests/build && cmake --build utests/build && ctest --test-dir utests/build'
+                    }
+                }
+            }
+
             stage('Checkout wordsapp') {
                 steps {
                     checkout scmGit(branches: [[name: "${ProjectBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${ProjectDir}"]], userRemoteConfigs: [[credentialsId: "${DeployKey}", url: "${ProjectURL}"]])
