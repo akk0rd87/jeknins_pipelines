@@ -1,7 +1,7 @@
 FROM amd64/ubuntu:latest
 USER root
 
-ARG ANDROID_SDK_VERSION=8092744
+ARG ANDROID_SDK_VERSION=10406996
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=${PATH}:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin:${ANDROID_SDK_ROOT}/platform-tools:${ANDROID_SDK_ROOT}/emulator
 
