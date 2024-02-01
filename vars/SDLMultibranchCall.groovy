@@ -8,6 +8,7 @@ def gradleCall(String key, String params, String GRADLE_TASK) {
 
 def call(
     String ProjectDir,
+    String GradlePath,
     String ProjectURL,
     String DeployKey,
     String KeyStoreKeyFile,
@@ -31,7 +32,7 @@ def call(
         environment {
             AKKORD_SDK_DIR="akkordsdk"
             AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
-            PROJECT_DIR="${WORKSPACE}/${ProjectDir}/proj.android/"
+            PROJECT_DIR="${WORKSPACE}/${ProjectDir}/${GradlePath}/"
         }
 
         stages {
