@@ -30,10 +30,18 @@ def call(
                 }
             }
 
-            stage('cmake') {
+            stage('CMake debug') {
                 steps {
                     dir("${PROJECT_DIR}") {
-                        sh 'cmake -S . -B ./build && cmake --build ./build'
+                        sh 'cmake -S . -B ./build -DCMAKE_BUILD_TYPE:STRING=Debug && cmake --build ./build -DCMAKE_BUILD_TYPE:STRING=Debug'
+                    }
+                }
+            }
+
+            stage('CMake release') {
+                steps {
+                    dir("${PROJECT_DIR}") {
+                        sh 'cmake -S . -B ./build -DCMAKE_BUILD_TYPE:STRING=Release && cmake --build ./build -DCMAKE_BUILD_TYPE:STRING=Release'
                     }
                 }
             }
