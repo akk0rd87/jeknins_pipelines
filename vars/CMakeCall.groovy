@@ -33,7 +33,7 @@ def call(
             stage('CMake debug') {
                 steps {
                     dir("${PROJECT_DIR}") {
-                        sh 'cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Debug && cmake --build ./build -DCMAKE_BUILD_TYPE=Debug'
+                        sh 'cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Debug && cmake --build ./build'
                     }
                 }
             }
@@ -41,7 +41,7 @@ def call(
             stage('CMake release') {
                 steps {
                     dir("${PROJECT_DIR}") {
-                        sh 'cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release && cmake --build ./build -DCMAKE_BUILD_TYPE=Release'
+                        sh 'cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release && cmake --build ./build'
                     }
                 }
             }
