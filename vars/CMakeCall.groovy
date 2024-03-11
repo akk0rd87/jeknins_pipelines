@@ -21,6 +21,14 @@ def call(
                 }
             }
 
+            stage('cmake') {
+                steps {
+                    dir("${PROJECT_DIR}") {
+                        sh 'cmake -S . -B ./build && cmake --build ./build'
+                    }
+                }
+            }
+
             stage('Test') {
                 steps {
                     dir("${PROJECT_DIR}") {
