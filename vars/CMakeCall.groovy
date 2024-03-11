@@ -11,10 +11,18 @@ def call(
         }
 
         environment {
+            AKKORD_SDK_DIR="akkordsdk"
+            AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
             PROJECT_DIR="${WORKSPACE}/${ProjectDir}/"
         }
 
         stages {
+            stage('Checkout akkordsdk') {
+                steps {
+                    checkout scmGit(branches: [[name: "master"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
+                }
+            }
+
             stage("Checkout project") {
                 steps {
                     checkout scmGit(branches: [[name: "${ProjectBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${ProjectDir}"]], userRemoteConfigs: [[credentialsId: "${DeployKey}", url: "${ProjectURL}"]])
