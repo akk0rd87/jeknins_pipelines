@@ -3,6 +3,7 @@ def call(
     String ProjectURL,
     String DeployKey,
     String ProjectBranch,
+    String SDKBranch,
     String AgentLabel
 ) {
     pipeline {
@@ -19,7 +20,7 @@ def call(
         stages {
             stage('Checkout akkordsdk') {
                 steps {
-                    checkout scmGit(branches: [[name: "master"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
+                    checkout scmGit(branches: [[name: "${SDKBranch}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
                 }
             }
 
