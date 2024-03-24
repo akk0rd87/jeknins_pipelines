@@ -38,7 +38,7 @@ def call(
         stages {
             stage('Checkout akkordsdk') {
                 steps {
-                    checkout scmGit(branches: [[name: "${params.AKK0RD_SDK_BRANCH}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[url: 'https://github.com/akk0rd87/akk0rdsdk.git']])
+                    checkout scmGit(branches: [[name: "${params.AKK0RD_SDK_BRANCH}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${AKKORD_SDK_DIR}"]], userRemoteConfigs: [[credentialsId: "akk0rdsdkGithubDeployKey", url: 'git@github.com:akk0rd87/akk0rdsdk.git']])
                 }
             }
 
