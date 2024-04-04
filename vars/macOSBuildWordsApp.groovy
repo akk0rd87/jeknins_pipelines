@@ -2,7 +2,8 @@ def updateVersion(
     String CurrentDir,
     String AppleId,
     String AppBundleId,
-    String VersionFile
+    String VersionFile,
+    String OptionsFile
 ) {
     dir("${CurrentDir}") {
         withCredentials([file  (credentialsId: 'macOSAPIKey',         variable: 'API_KEY_FILE'),
@@ -13,6 +14,7 @@ def updateVersion(
                 export APP_APPLE_ID='''     + AppleId     + '''
                 export APP_BUNDLE_ID='''    + AppBundleId + '''
                 export NEW_VERSION_FILE=''' + VersionFile + '''
+                export EXPORT_OPTIONS_FILE=''' + OptionsFile + '''
                 python3 "$AKKORD_SDK_HOME"/tools/ios/getAppLastVersion.py
                 python3 "$AKKORD_SDK_HOME"/tools/ios/getProfile.py
                 chmod +x ''' + VersionFile + '''
@@ -162,9 +164,9 @@ def call(
 
             stage('Update version') {
                 steps {
-                    updateVersion("${WORDS01}/sh/", '960409308' , 'org.popapp.WordsRuFree'       , "${NEW_VERSION_FILE01}")
-                    updateVersion("${WORDS02}/sh/", '1080796090', 'org.popapp.WordsRuFree2'      , "${NEW_VERSION_FILE02}")
-                    updateVersion("${WORDS03}/sh/", '1112942939', 'org.popapp.sostavslovaizbukv' , "${NEW_VERSION_FILE03}")
+                    updateVersion("${WORDS01}/sh/", '960409308' , 'org.popapp.WordsRuFree'       , "${NEW_VERSION_FILE01}", "${WORDS01}/sh/exportOptions.plist")
+                    updateVersion("${WORDS02}/sh/", '1080796090', 'org.popapp.WordsRuFree2'      , "${NEW_VERSION_FILE02}", "${WORDS02}/sh/exportOptions.plist")
+                    updateVersion("${WORDS03}/sh/", '1112942939', 'org.popapp.sostavslovaizbukv' , "${NEW_VERSION_FILE03}", "${WORDS03}/sh/exportOptions.plist")
                 }
             }
 

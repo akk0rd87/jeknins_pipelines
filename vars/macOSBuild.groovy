@@ -16,7 +16,8 @@ def call(
         environment {
             AKKORD_SDK_DIR="akkordsdk"
             AKKORD_SDK_HOME="${WORKSPACE}/${AKKORD_SDK_DIR}/"
-            PROJECT_DIR="${WORKSPACE}/${ProjectDir}/"
+            PROJECT_DIR="${WORKSPACE}/${ProjectDir}/proj.ios/"
+            PROJECT_SH_DIR="${PROJECT_DIR}/sh"
             NEW_VERSION_FILE="${WORKSPACE}/${ProjectDir}/newiOSversion.sh"
         }
 
@@ -59,7 +60,7 @@ def call(
 
             stage('Pod: reintegrate') {
                 steps {
-                    dir("${PROJECT_DIR}/proj.ios/") {
+                    dir("${PROJECT_DIR}") {
                         sh './reintegratePod.sh'
                     }
                 }
@@ -67,7 +68,7 @@ def call(
 
             stage('Test project') {
                 steps {
-                    dir("${PROJECT_DIR}/proj.ios/sh/") {
+                    dir("${PROJECT_SH_DIR}") {
                         sh 'chmod +x test.sh && ./test.sh'
                     }
                 }
@@ -77,9 +78,10 @@ def call(
                 environment {
                     APP_APPLE_ID="${AppAppleId}"
                     APP_BUNDLE_ID="${AppBundleId}"
+                    EXPORT_OPTIONS_FILE="${PROJECT_SH_DIR}/exportOptions.plist"
                 }
                 steps {
-                    dir("${PROJECT_DIR}/proj.ios/sh/") {
+                    dir("${PROJECT_SH_DIR}") {
                         withCredentials([file  (credentialsId: 'macOSAPIKey',         variable: 'API_KEY_FILE'),
                                          string(credentialsId: 'macOSAPIKeyIssuerId', variable: 'API_ISSUER'),
                                          string(credentialsId: 'macOSAPIKeyId'      , variable: 'API_KEY_ID')
@@ -99,7 +101,7 @@ def call(
 
             stage('Archive') {
                 steps {
-                    dir("${PROJECT_DIR}/proj.ios/sh/") {
+                    dir("${PROJECT_SH_DIR}") {
                         sh 'chmod +x archive.sh && ./archive.sh'
                     }
                 }
@@ -107,7 +109,7 @@ def call(
 
             stage('Export') {
                 steps {
-                    dir("${PROJECT_DIR}/proj.ios/sh/") {
+                    dir("${PROJECT_SH_DIR}") {
                         sh 'chmod +x export.sh && ./export.sh'
                     }
                 }
@@ -119,7 +121,7 @@ def call(
                     APP_BUNDLE_ID="${AppBundleId}"
                 }
                 steps {
-                    dir("${PROJECT_DIR}/proj.ios/sh/") {
+                    dir("${PROJECT_SH_DIR}") {
                         withCredentials([file  (credentialsId: 'macOSAPIKey',         variable: 'API_KEY_FILE'),
                                          string(credentialsId: 'macOSAPIKeyIssuerId', variable: 'API_ISSUER'),
                                          string(credentialsId: 'macOSAPIKeyId'      , variable: 'API_KEY_ID')
@@ -140,7 +142,7 @@ def call(
 
             stage('Clean') {
                 steps {
-                    dir("${PROJECT_DIR}/proj.ios/sh/") {
+                    dir("${PROJECT_SH_DIR}") {
                         sh '''
                         rm -rf private_keys
                         chmod +x clean.sh
