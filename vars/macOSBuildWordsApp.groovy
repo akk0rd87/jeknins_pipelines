@@ -51,6 +51,14 @@ def uploadApp(
     }
 }
 
+def reintegratePod(
+    String CurrentDir
+) {
+    dir("${CurrentDir}") {
+        sh 'chmod +x reintegratePod.sh && ./reintegratePod.sh'
+    }
+}
+
 def archiveApp(
     String CurrentDir
 ) {
@@ -179,6 +187,14 @@ def call(
                           make
                         '''
                     }
+                }
+            }
+
+            stage('Pod: reintegrate') {
+                steps {
+                    reintegratePod("${WORDS01}/")
+                    reintegratePod("${WORDS02}/")
+                    reintegratePod("${WORDS03}/")
                 }
             }
 
