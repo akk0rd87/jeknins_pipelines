@@ -170,14 +170,6 @@ def call(
                 }
             }
 
-            stage('Update version') {
-                steps {
-                    updateVersion("${WORDS01}/sh/", '960409308' , 'org.popapp.WordsRuFree'       , "${NEW_VERSION_FILE01}", "${WORDS01}/sh/exportOptions.plist")
-                    updateVersion("${WORDS02}/sh/", '1080796090', 'org.popapp.WordsRuFree2'      , "${NEW_VERSION_FILE02}", "${WORDS02}/sh/exportOptions.plist")
-                    updateVersion("${WORDS03}/sh/", '1112942939', 'org.popapp.sostavslovaizbukv' , "${NEW_VERSION_FILE03}", "${WORDS03}/sh/exportOptions.plist")
-                }
-            }
-
             stage('Build openssl') {
                 steps {
                     dir("${OPENSSL_HOME}") {
@@ -187,6 +179,14 @@ def call(
                           make
                         '''
                     }
+                }
+            }
+
+            stage('Update version') {
+                steps {
+                    updateVersion("${WORDS01}/sh/", '960409308' , 'org.popapp.WordsRuFree'       , "${NEW_VERSION_FILE01}", "${WORDS01}/sh/exportOptions.plist")
+                    updateVersion("${WORDS02}/sh/", '1080796090', 'org.popapp.WordsRuFree2'      , "${NEW_VERSION_FILE02}", "${WORDS02}/sh/exportOptions.plist")
+                    updateVersion("${WORDS03}/sh/", '1112942939', 'org.popapp.sostavslovaizbukv' , "${NEW_VERSION_FILE03}", "${WORDS03}/sh/exportOptions.plist")
                 }
             }
 
@@ -211,6 +211,14 @@ def call(
                     exportApp("${WORDS01}/sh/")
                     exportApp("${WORDS02}/sh/")
                     exportApp("${WORDS03}/sh/")
+                }
+            }
+
+            stage('Upload') {
+                steps {
+                    uploadApp("${WORDS01}/sh/", '960409308' , 'org.popapp.WordsRuFree'       , "${NEW_VERSION_FILE01}")
+                    uploadApp("${WORDS02}/sh/", '1080796090', 'org.popapp.WordsRuFree2'      , "${NEW_VERSION_FILE02}")
+                    uploadApp("${WORDS03}/sh/", '1112942939', 'org.popapp.sostavslovaizbukv' , "${NEW_VERSION_FILE03}")
                 }
             }
 
