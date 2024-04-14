@@ -43,6 +43,7 @@ def uploadApp(
                 rm -rf private_keys
                 mkdir  private_keys
                 source ''' + VersionFile + '''
+                cp "$API_KEY_FILE" private_keys/
                 chmod +x upload.sh
                 ./upload.sh
                 rm -rf private_keys
